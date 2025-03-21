@@ -56,6 +56,7 @@ const getDescription = async (partNumber) => {
     browser = await puppeteer
       .launch({
         headless: "new", // Ensure headless mode is compatible
+        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined, // Ensure it uses the installed Chromium
         defaultViewport: null,
         args: [
           "--no-sandbox",
