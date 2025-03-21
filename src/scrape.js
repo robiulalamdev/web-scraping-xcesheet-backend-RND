@@ -41,17 +41,35 @@ const getDescription = async (partNumber) => {
   let browser;
   try {
     console.log("Launching browser...");
-    browser = await puppeteer.launch({
-      headless: true,
-      defaultViewport: null,
-      args: [
-        "--no-sandbox",
-        "--disable-setuid-sandbox",
-        "--disable-dev-shm-usage",
-        "--disable-accelerated-2d-canvas",
-        "--disable-gpu",
-      ],
-    });
+    // browser = await puppeteer.launch({
+    //   executablePath: "/usr/bin/google-chrome",
+    //   headless: true,
+    //   defaultViewport: null,
+    //   args: [
+    //     "--no-sandbox",
+    //     "--disable-setuid-sandbox",
+    //     "--disable-dev-shm-usage",
+    //     "--disable-accelerated-2d-canvas",
+    //     "--disable-gpu",
+    //   ],
+    // });
+    browser = await puppeteer
+      .launch({
+        executablePath: "/usr/bin/google-chrome",
+        headless: true,
+        defaultViewport: null,
+        args: [
+          "--no-sandbox",
+          "--disable-setuid-sandbox",
+          "--disable-dev-shm-usage",
+          "--disable-accelerated-2d-canvas",
+          "--disable-gpu",
+        ],
+      })
+      .catch((err) => {
+        console.error("Puppeteer failed to launch:", err);
+        process.exit(1);
+      });
     console.log("Browser launched successfully");
   } catch (error) {
     console.error("Failed to launch browser:", error);
