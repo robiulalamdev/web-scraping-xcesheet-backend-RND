@@ -10,6 +10,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// if not exist uploads/ folder, create it
+if (!fs.existsSync("uploads")) {
+  fs.mkdirSync("uploads");
+}
 const upload = multer({ dest: "uploads/" });
 
 // Upload & Process Excel File
