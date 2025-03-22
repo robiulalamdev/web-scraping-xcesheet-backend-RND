@@ -97,8 +97,8 @@ app.post("/scrape", async (req, res) => {
         const result = await getDescription(row?.Part);
         newRow = {
           ...row,
-          description: result?.description || "Not found",
-          category: result?.category || "Not found",
+          description: result?.description,
+          category: result?.category,
         };
       } else {
         newRow = {

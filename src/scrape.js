@@ -216,7 +216,7 @@ const getDescription = async (partNumber) => {
     return {
       part: partNumber,
       description: pageData,
-      category: category || "Not found",
+      category: category || "Other",
     };
   } catch (error) {
     console.error("Failed to extract data:", error);
