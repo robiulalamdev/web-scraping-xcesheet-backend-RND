@@ -29,14 +29,14 @@ app.post("/scrape", async (req, res) => {
         const result = await getDescription(row?.Part);
         newRow = {
           ...row,
-          description: result?.description,
-          category: result?.category,
+          Description: result?.description,
+          Category: result?.category,
         };
       } else {
         newRow = {
           ...row,
-          description: "Not found",
-          category: "Not found",
+          Description: "Not found",
+          Category: "Not found",
         };
       }
 
@@ -63,4 +63,4 @@ app.get("/", (req, res) => {
   res.send("API version 1.0.0");
 });
 
-app.listen(9700, () => console.log("Server running on port 3000"));
+app.listen(9700, () => console.log("Server running on port 9700"));
