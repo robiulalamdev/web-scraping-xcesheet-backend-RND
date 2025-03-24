@@ -1,4 +1,5 @@
 const puppeteer = require("puppeteer");
+const { getCategory } = require("./lib/services");
 
 let browser = null;
 
@@ -41,35 +42,18 @@ const getDescription = async (partNumber) => {
   let browser;
   try {
     console.log("Launching browser...");
-    // browser = await puppeteer.launch({
-    //   executablePath: "/usr/bin/google-chrome",
-    //   headless: true,
-    //   defaultViewport: null,
-    //   args: [
-    //     "--no-sandbox",
-    //     "--disable-setuid-sandbox",
-    //     "--disable-dev-shm-usage",
-    //     "--disable-accelerated-2d-canvas",
-    //     "--disable-gpu",
-    //   ],
-    // });
-    browser = await puppeteer
-      .launch({
-        headless: "new", // Ensure headless mode is compatible
-        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined, // Ensure it uses the installed Chromium
-        defaultViewport: null,
-        args: [
-          "--no-sandbox",
-          "--disable-setuid-sandbox",
-          "--disable-dev-shm-usage",
-          "--disable-accelerated-2d-canvas",
-          "--disable-gpu",
-        ],
-      })
-      .catch((err) => {
-        console.error("Puppeteer failed to launch:", err);
-        process.exit(1);
-      });
+    browser = await puppeteer.launch({
+      headless: true,
+      defaultViewport: null,
+      args: [
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-dev-shm-usage",
+        "--disable-accelerated-2d-canvas",
+        "--disable-gpu",
+      ],
+    });
+
     console.log("Browser launched successfully");
   } catch (error) {
     console.error("Failed to launch browser:", error);
@@ -227,9 +211,12 @@ const getDescription = async (partNumber) => {
     await cleanup(browser, page, cdp);
     console.log("Resources cleaned up");
 
+    const category = await getCategory(pageData);
+
     return {
       part: partNumber,
       description: pageData,
+      category: category || "Other",
     };
   } catch (error) {
     console.error("Failed to extract data:", error);
