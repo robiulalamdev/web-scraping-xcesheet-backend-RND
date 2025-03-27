@@ -4,13 +4,19 @@ const { getDescription } = require("./scrape");
 const { SSE } = require("./sse/sseServer");
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "http://localhost:3001"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 app.get("/sse-connect/:id", SSE.initialize);
 
 app.post("/scrape", async (req, res) => {
-  const { sheets = [], connectionId } = req.body;
+  const { sheets = [], connectionId = "" } = req.body;
+
   if (!sheets || sheets?.length === 0) {
     return res
       .status(400)
@@ -18,41 +24,9 @@ app.post("/scrape", async (req, res) => {
   }
 
   try {
-    let newData = [];
-    for (let i = 0; i < sheets.length; i++) {
-      const row = sheets[i];
-      console.log("No: ", i, "  ", row?.Part);
+    let newData = await getDescription(sheets);
 
-      let newRow = null;
-
-      if (row?.Part) {
-        const result = await getDescription(row?.Part);
-        newRow = {
-          ...row,
-          Description: result?.description,
-          Category: result?.category,
-        };
-      } else {
-        newRow = {
-          ...row,
-          Description: "Not found",
-          Category: "Not found",
-        };
-      }
-
-      if (newRow) {
-        newData.push(newRow);
-        // now will send the data to the client
-        SSE.sendMessage(
-          connectionId,
-          JSON.stringify({
-            row: newRow,
-          })
-        );
-      }
-    }
-
-    res.status(200).json({ success: true, data: newData });
+    return res.status(200).json({ success: true, data: newData });
   } catch (error) {
     console.error("Error processing file:", error);
     res.status(500).json({ error: "Internal server error" });
