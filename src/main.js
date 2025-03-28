@@ -6,7 +6,12 @@ const { SSE } = require("./sse/sseServer");
 const app = express();
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://localhost:3001"],
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:3001",
+      "https://admin.computer-spot.com",
+      "https://scraping-xcelsheet.vercel.app",
+    ],
     credentials: true,
   })
 );

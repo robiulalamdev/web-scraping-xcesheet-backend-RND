@@ -4,11 +4,15 @@ const RFQ_Queries = [
     category: "Motherboard",
   },
   {
+    rfq: "MOTHERBOARD",
+    category: "Motherboard",
+  },
+  {
     rfq: "TOP COVER",
     category: "Plastic Parts",
   },
   {
-    rfq: "BASE  ENCLOSURE",
+    rfq: "BASE ENCLOSURE",
     category: "Plastic Parts",
   },
   {
@@ -88,7 +92,7 @@ const RFQ_Queries = [
     category: "Memory",
   },
   {
-    rfq: "RAM ",
+    rfq: "RAM",
     category: "Memory",
   },
   {
@@ -96,7 +100,7 @@ const RFQ_Queries = [
     category: "Cable",
   },
   {
-    rfq: "CPU ",
+    rfq: "CPU",
     category: "Processor",
   },
   {
